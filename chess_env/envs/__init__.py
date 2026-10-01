@@ -1,4 +1,5 @@
 from chess_env.envs.chessEnv import chessEnv
+import numpy as np
 
 def __init__(self, render_mode=None, max_moves=50):
     super().__init__()

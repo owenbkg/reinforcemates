@@ -25,9 +25,7 @@ def generate_position():
             board.set_piece_at(chess.square(random.randint(0,7), random.randint(0,7)), chess.Piece(chess.ROOK, chess.WHITE))
         else:
             break
-    print(list(board.legal_moves)[0])
-    print(board)
-    return board 
+    return board.fen()
 
 if __name__ == "__main__":  
     generate_position()
