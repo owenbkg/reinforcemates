@@ -12,20 +12,27 @@
 
 import chess
 import random
+import itertools
+import chess.gaviota
+tablebase = chess.gaviota.open_tablebase(r"C:\Users\user\Desktop\projects\RL-RookMate\chess_env")
 
+def generate_position(max_dtm = 5):
+    while True:
+        wk, wq, bk = random.sample(range(64), 3)      # distinct squares
+        board = chess.Board(None)
+        board.set_piece_at(wk, chess.Piece(chess.KING, chess.WHITE))
+        board.set_piece_at(wq, chess.Piece(chess.QUEEN, chess.WHITE))
+        board.set_piece_at(bk, chess.Piece(chess.KING, chess.BLACK))
+        board.turn = chess.WHITE
 
-def generate_position():
-    board = chess.Board("8/8/8/8/8/8/8/8 w - -")
+        if not board.is_valid() or board.is_game_over():
+            continue
+        if max_dtm is not None:
+            dtm = tablebase.probe_dtm(board)
+            if not (0 < dtm <= max_dtm):
+                continue
+        return board.fen()
 
-    while(True):
-        if (not board.is_valid()):
-            board.clear()
-            board.set_piece_at(chess.square(random.randint(0,7), random.randint(0,7)), chess.Piece(chess.KING, chess.BLACK))
-            board.set_piece_at(chess.square(random.randint(0,7), random.randint(0,7)), chess.Piece(chess.KING, chess.WHITE))
-            board.set_piece_at(chess.square(random.randint(0,7), random.randint(0,7)), chess.Piece(chess.ROOK, chess.WHITE))
-        else:
-            break
-    return board.fen()
 
 if __name__ == "__main__":  
-    generate_position()
+    print(chess.Board(generate_position()))

@@ -14,10 +14,10 @@ def mask_fn(env):
 if __name__ == "__main__":
     env = gym.make("chess_env/ChessEnv-v0")
     env = Monitor(ActionMasker(env, mask_fn))
-    model = MaskablePPO.load("checkpoints/ppo_krk", env=env)
+    model = MaskablePPO.load("checkpoints/ppo_kqk", env=env)
 
 
     reward_mean, std = evaluate_policy(
-        model, env, n_eval_episodes=100, deterministic=True,)
+        model, env, n_eval_episodes=100, deterministic=True)
 
     print(reward_mean, std)

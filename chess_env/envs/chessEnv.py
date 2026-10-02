@@ -12,18 +12,17 @@ class chessEnv(gym.Env):
     metadata = {"render_modes": ["ansi"]}    
 
     def __init__(self, start_fen=None, max_moves = 50):
-        self.start_fen = generate_position()
-        self.board = chess.Board(self.start_fen)
+        self.start_fen = start_fen
+        self.board = None
         self.observation_space = spaces.Box(0, 1, shape=(3, 8, 8), dtype=np.int8)
         self.action_space = spaces.Discrete(4096)
-        self.n_pieces = len(self.board.piece_map())
         self.n_moves = 0
         self.max_moves = max_moves
 
     def _get_obs(self):
         #example output: {60: Piece.from_symbol('R'), 47: Piece.from_symbol('k'), 5: Piece.from_symbol('K')}
         piece_dict = self.board.piece_map()
-        obs_arr = np.zeros((self.n_pieces,8,8), dtype = np.int8)
+        obs_arr = np.zeros((3,8,8), dtype = np.int8)
         i = 0
         for coord, piece in piece_dict.items():
             if piece.color == chess.BLACK:
@@ -71,11 +70,12 @@ class chessEnv(gym.Env):
         move = moves[random.randint(0,len(moves)-1)]
         self.board.push(move)
 
+        self.n_moves+=1
         truncated = self.n_moves >= self.max_moves
 
         if self.board.is_game_over():    
             return self._get_obs(), -0.5, True, False, self._get_info()
-        return self._get_obs()   , -0.01, False, truncated, self._get_info()
+        return self._get_obs()   , reward, False, truncated, self._get_info()
 
 
     def render(self):

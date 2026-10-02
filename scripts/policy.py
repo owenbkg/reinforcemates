@@ -9,6 +9,16 @@ import chess_env
 def mask_fn(env):
     return env.unwrapped.action_mask()
 
+def create_model():
+    model = MaskablePPO("MlpPolicy", vec_env, gamma=0.99, verbose=1)
+    model.learn(total_timesteps=100_000, progress_bar = True)
+    model.save("checkpoints/ppo_kqk")
+
+def load_model():
+    model = MaskablePPO.load("checkpoints/ppo_kqk", env = vec_env)
+    model.learn(total_timesteps=300_000, progress_bar = True)
+    model.save("checkpoints/ppo_kqk")
+
 if __name__ == "__main__":
     vec_env = make_vec_env(
         "chess_env/ChessEnv-v0",
@@ -16,9 +26,12 @@ if __name__ == "__main__":
         wrapper_class=ActionMasker,
         wrapper_kwargs={"action_mask_fn": mask_fn},
     )
-    model = MaskablePPO("MlpPolicy", vec_env, gamma=0.9, verbose=1)
-    model.learn(total_timesteps=10_000)
-    model.save("checkpoints/ppo_krk")
+
+    if input() == "new":
+        create_model()
+    else:
+        load_model()
+
 
     """
     env = gym.make("chess_env/ChessEnv-v0",
