@@ -16,7 +16,7 @@ import itertools
 import chess.gaviota
 tablebase = chess.gaviota.open_tablebase(r"C:\Users\user\Desktop\projects\RL-RookMate\chess_env")
 
-def generate_position(max_dtm = 5):
+def generate_position(max_dtm = 7):
     while True:
         wk, wq, bk = random.sample(range(64), 3)      # distinct squares
         board = chess.Board(None)

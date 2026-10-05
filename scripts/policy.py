@@ -11,12 +11,12 @@ def mask_fn(env):
 
 def create_model():
     model = MaskablePPO("MlpPolicy", vec_env, gamma=0.99, verbose=1)
-    model.learn(total_timesteps=100_000, progress_bar = True)
+    model.learn(total_timesteps=1_000_000, progress_bar = True)
     model.save("checkpoints/ppo_kqk")
 
 def load_model():
     model = MaskablePPO.load("checkpoints/ppo_kqk", env = vec_env)
-    model.learn(total_timesteps=300_000, progress_bar = True)
+    model.learn(total_timesteps=200_000, progress_bar = True)
     model.save("checkpoints/ppo_kqk")
 
 if __name__ == "__main__":

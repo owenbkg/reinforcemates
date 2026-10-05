@@ -52,7 +52,6 @@ class chessEnv(gym.Env):
     def step(self, action):
         from_square = action//64
         to_square = action % 64
-        reward = 0
         #legal move check
         move = chess.Move(from_square, to_square)
         if self.board.is_legal(move):
@@ -75,7 +74,7 @@ class chessEnv(gym.Env):
 
         if self.board.is_game_over():    
             return self._get_obs(), -0.5, True, False, self._get_info()
-        return self._get_obs()   , reward, False, truncated, self._get_info()
+        return self._get_obs()   , -0.05, False, truncated, self._get_info()
 
 
     def render(self):

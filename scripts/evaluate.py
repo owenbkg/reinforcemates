@@ -18,6 +18,6 @@ if __name__ == "__main__":
 
 
     reward_mean, std = evaluate_policy(
-        model, env, n_eval_episodes=100, deterministic=True)
+        model, env, n_eval_episodes=1000, deterministic=True)
 
     print(reward_mean, std)
